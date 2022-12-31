@@ -1,0 +1,180 @@
+﻿<Window x:Class="PrismPractice.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:bh="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.WPF"
+        xmlns:viewmodels="clr-namespace:PrismPractice.ViewModels" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:PrismPractice.Views"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="{Binding Title}" Height="350" Width="525" >
+
+    <Window.Background>
+        <ImageBrush ImageSource="{Binding Path=BackGroundPath.Value}" Opacity="0.5" />
+    </Window.Background>
+    <Window.Resources>
+        <!--<ControlTemplate x:Key="OutLineText" TargetType="{x:Type local:FontBorderTextBlock}">
+            <TextBlock TextTrimming="CharacterEllipsis" />
+        </ControlTemplate>-->
+    </Window.Resources>
+    
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <Label
+                HorizontalAlignment="Left"
+                Height="30"
+                Width="400"
+                AllowDrop="True"
+                Background="WhiteSmoke"
+                Content="{Binding DropFile.Value}">
+                <bh:Interaction.Triggers>
+                    <bh:EventTrigger EventName="Drop">
+                        <!--ReactiveProperty.WPFのインストールが必要-->
+                        <Interactivity:EventToReactiveCommand Command="{Binding FileDropCommand}"/>
+                    </bh:EventTrigger>
+                </bh:Interaction.Triggers>
+            </Label>
+
+            <Grid
+                x:Name="OyaGrid1"
+                VerticalAlignment="Center">
+                <TextBox
+                    x:Name="TextBox"
+                   Background="WhiteSmoke"
+                   FontSize="15"
+                   MaxWidth="{Binding ActualWidth, ElementName=OyaGrid1}"
+                   Visibility="{Binding TextBoxVisibility.Value}"
+                   Text="{Binding TextBoxText.Value, UpdateSourceTrigger=PropertyChanged}">
+                    <bh:Interaction.Triggers>
+                        <bh:EventTrigger EventName="LostFocus">
+                            <!--ReactiveProperty.WPFのインストールが必要-->
+                            <bh:InvokeCommandAction Command="{Binding LostFocusEvent}"/>
+                        </bh:EventTrigger>
+                        <bh:EventTrigger EventName="Loaded">
+                            <!--ReactiveProperty.WPFのインストールが必要-->
+                            <bh:InvokeCommandAction Command="{Binding LoadedEvent}"/>
+                        </bh:EventTrigger>
+                    </bh:Interaction.Triggers>
+                </TextBox>
+                <ContentControl
+                        x:Name="Oya">
+                    <local:FontBorderTextBlock
+                            x:Name="sample"
+                            MaxWidth="{Binding ActualWidth, ElementName=Oya}"
+                            EditableText="{Binding ElementName=OyaGrid1, Path=DataContext.TextBoxText.Value}"
+                            FontFamily="Century Gothic"
+                            Foreground="Black"  
+                            BorderColor="White" 
+                            FontSize="15"
+                            MouseDoubleClick="MouseDoubleClick"
+                            Visibility="{Binding ElementName=OyaGrid1, Path=DataContext.FontBorderTextVisibility.Value}"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+                        <!--Template="{StaticResource ResourceKey=OutLineText}"-->
+                        <bh:Interaction.Triggers>
+                            <bh:EventTrigger EventName="MouseDoubleClick">
+                                <!--ReactiveProperty.WPFのインストールが必要-->
+                                <bh:InvokeCommandAction Command="{Binding ElementName=Oya, Path=DataContext.DoubleClickCommand}"/>
+                            </bh:EventTrigger>
+                        </bh:Interaction.Triggers>
+                    </local:FontBorderTextBlock>
+                </ContentControl>
+            </Grid>
+        </StackPanel>
+
+        <DockPanel Grid.Row="1"
+                   LastChildFill="True">
+            <Grid Background="Cyan"
+                  MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+                <Label Content="コントロールのフォーカス解除領域"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            </Grid>
+        </DockPanel>
+        
+        <StackPanel
+            Grid.Row="2"
+            Orientation="Horizontal"
+            VerticalAlignment="Center">
+            <Grid
+                Height="100"
+                Width="100">
+                <Button
+                    Content="電卓表示"
+                    Height="30"
+                    Width="100"
+                    Command="{Binding OpenCalculatorCommand}"></Button>
+            </Grid>
+
+            <Grid Height="100"
+                  Width="100">
+                <Label Background="AliceBlue"/>
+                <local:FontBorderTextBlock 
+                    EditableText="おはよう"
+                    FontFamily="Century Gothic"
+                    Foreground="Black"  
+                    BorderColor="Green" 
+                    FontSize="15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </Grid>
+            <Grid x:Name="OyaElement1"
+                  Height="100"
+                  Width="100">
+                <Label Background="Aqua"/>
+                <local:FontBorderTextBlock 
+                    EditableText="{Binding ElementName=OyaElement1, Path=DataContext.BindingText.Value}"
+                    Foreground="Black"
+                    BorderColor="White" 
+                    FontSize="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </Grid>
+            <Grid x:Name="OyaElement2"
+                  Height="100"
+                  Width="100">
+                <TextBox 
+                   Background="Gray"
+                   Height="100"
+                   Width="100"
+                   FontSize="15"
+                   Text="{Binding TextBox.Value, UpdateSourceTrigger=PropertyChanged}"/>
+                <local:FontBorderTextBlock 
+                    EditableText="{Binding ElementName=OyaElement2, Path=DataContext.TextBox.Value}"
+                    Foreground="Red"
+                    BorderColor="White"
+                    FontSize="15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </Grid>
+            <Grid Height="100"
+                  Width="100" 
+                  x:Name="OyaElement3">
+                <ScrollViewer
+                    VerticalScrollBarVisibility="Hidden"
+                    Background="WhiteSmoke">
+                    <ItemsControl ItemsSource="{Binding ItemControll}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <local:ItemControll />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <Button HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Content="アイテム追加"
+                        Width="{Binding ActualWidth, ElementName=OyaElement3}"
+                        Command="{Binding AddItemControllCommand}"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

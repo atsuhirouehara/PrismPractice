@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="PrismPractice.Views.Calculator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" d:DataContext="{d:DesignInstance Type=viewmodels:Calculator}"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d"
+             xmlns:viewmodels="clr-namespace:PrismPractice.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             
+             d:DesignHeight="450" d:DesignWidth="400">
+    <Grid Background="Aqua">
+        <Label Content="Dialog"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               FontSize="100"
+            />
+    </Grid>
+</UserControl>
